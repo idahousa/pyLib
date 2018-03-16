@@ -46,7 +46,7 @@ def list_image_files(directory_path):
 #Make a list of all image files in a given directory#
 #The extern of image file is "file_extern".
 #Example: list_image_files_with_given_extern('data','jpg') => list all jpeg file in 'data' directory.
-def list_image_files_with_given_extern(directory_path, file_extern):
+def list_files_with_given_extern(directory_path, file_extern):
     rtn_list = []
     file_extern_list = [file_extern]
     all_file_list = list_files_in_directory(directory_path)
