@@ -1,3 +1,7 @@
+#=============================================================#
+#Modified: 2018-03-16
+#Author: datnt
+#Descriptions#
 #Extract the extern of a file name.
 #For example, abc/xyz.txt => should return 'txt'
 def file_extern(file_name):
@@ -11,3 +15,4 @@ def file_extern(file_name):
         return 'error'
     else:
         return file_name[index:file_len]
+#=============================================================#
