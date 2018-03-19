@@ -12,6 +12,8 @@ import cv2
 #===================================================================================================#
 def accumulate_histogram_features(image):
     max_val = image.max() + 1
+    if max_val <=2:
+        return -1
     hist, bins = np.histogram(image.ravel(), int(max_val))
     return hist, bins
 #===================================================================================================#
@@ -35,8 +37,10 @@ def accumulate_histogram_features(image):
 # overlapped_ratio: A value from 0 to 1 that indicates the overlapped ratio of sub-blocks.
 #===================================================================================================#
 def lbp_riu_global_lobal_features(image, resolution, radius, method='default', num_blk_height=1, num_blk_width=1, overlapped_ratio=0):
-    lbp_image = local_binary_pattern(image, resolution, radius, method=method)
     height, width = image.shape
+    if (overlapped_ratio <0 or overlapped_raito >=1 or num_blk_height <=0 or num_blk_width <=0):
+        return -1
+    lbp_image = local_binary_pattern(image, resolution, radius, method=method)
     blk_width = int(width / num_blk_width) + 1
     blk_height = int(height / num_blk_height) + 1
     overlapped_height = int(blk_height * overlapped_ratio)
