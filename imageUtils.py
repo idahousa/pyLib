@@ -12,7 +12,8 @@ import cv2
 #===================================================================================================#
 def accumulate_histogram_features(image):
     max_val = image.max() + 1
-    if max_val <=2:
+    if max_val < 2:
+        #Maximum input value is 1 => Wrong input data
         return -1
     hist, bins = np.histogram(image.ravel(), int(max_val))
     return hist, bins
