@@ -1,8 +1,8 @@
-import skimage
 from skimage import io
-from skimage.feature import local_binary_pattern
 from skimage import data
+from skimage.feature import local_binary_pattern
 import numpy as np
+import cv2
 #===================================================================================================#
 #Date-of-code: 2018-xx-xx
 #Author: datnt
@@ -10,10 +10,10 @@ import numpy as np
 #Accumulate the histogram of an gray-scale image or 2-d array
 #The data-type of input_image must be integer values
 #===================================================================================================#
-def accumulate_histogram_features(input_image):
-  max_val = input_image.max()
-  hist, bins = np.histogram(input_image.ravel(), bins = max_val)
-  return hist, bins
+def accumulate_histogram_features(image):
+    max_val = image.max()
+    hist, bins = np.histogram(image.ravel(), int(max_val))
+    return hist, bins
 #===================================================================================================#
 #Date-of-code: 2018-xx-xx
 #Author: datnt
@@ -34,16 +34,43 @@ def accumulate_histogram_features(input_image):
 # num_blk_width : number of sub-blocks in horizontal direction
 # overlapped_ratio: A value from 0 to 1 that indicates the overlapped ratio of sub-blocks.
 #===================================================================================================#
-def lbp_riu_global_lobal_features(image, resolution, radius, method = 'default', num_blk_height,num_blk_width,overlapped_ratio = 0):
-  lbp_image = local_binary_pattern(image,resolution, radius, method = method)
-  height, width = image.shape
-  blk_width = width/num_blk_width
-  blk_height = height/num_blk_height
-  overlapped_height = blk_height*overlapped_ratio
-  overlapped_width  = blk_width*overlapped_ratio
-  
-  
-  
+def lbp_riu_global_lobal_features(image, resolution, radius, method='default', num_blk_height=1, num_blk_width=1, overlapped_ratio=0):
+    lbp_image = local_binary_pattern(image, resolution, radius, method=method)
+    height, width = image.shape
+    blk_width = int(width / num_blk_width) + 1
+    blk_height = int(height / num_blk_height) + 1
+    overlapped_height = int(blk_height * overlapped_ratio)
+    overlapped_width = int(blk_width * overlapped_ratio)
+    index = 0
+    for r in range(0, height, blk_height):
+        for c in range(0, width, blk_width):
+            x_start = c - overlapped_width
+            y_start = r - overlapped_height
+            x_end = x_start + blk_width + 2*overlapped_width
+            y_end = y_start + blk_height + 2*overlapped_height
+            if x_start<0:
+                x_start=0
+            if y_start<0:
+                y_start=0
+            if x_end>=width:
+                x_end = width - 1
+            if y_end>=height:
+                y_end = height - 1
+            sub_lbp_image = lbp_image[y_start:y_end, x_start:x_end]
+            sub_hist, sub_bins = accumulate_histogram_features(sub_lbp_image)
+            if index ==0:
+                hist = sub_hist
+            else:
+                hist = np.concatenate((hist,sub_hist), axis=0)
+            index +=1
+            if bDebug:
+              dst_path = 'data_files/test_{}.bmp'.format(index)
+              cv2.imwrite(dst_path,sub_lbp_image)
+    return hist  
+#===================================================================================================#
+#Date-of-code: 2018-xx-xx
+#Author: datnt
+#Description:
   
 
 
