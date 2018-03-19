@@ -2,6 +2,7 @@ import skimage
 from skimage import io
 from skimage import local_binary_pattern
 from skimage import data
+import numpy as np
 #===================================================================================================#
 #Date-of-code: 2018-xx-xx
 #Author: datnt
@@ -9,7 +10,9 @@ from skimage import data
 #Accumulate the histogram of an gray-scale image
 #===================================================================================================#
 def histogram_features(input_image):
-  
+  max_val = input_image.max() + 1
+  hist, bins = np.histogram(input_image.ravel(), bins = max_val)
+  return hist
 #===================================================================================================#
 #Date-of-code: 2018-xx-xx
 #Author: datnt
