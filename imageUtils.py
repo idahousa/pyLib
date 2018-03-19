@@ -11,7 +11,7 @@ import cv2
 #The data-type of input_image must be integer values
 #===================================================================================================#
 def accumulate_histogram_features(image):
-    max_val = image.max()
+    max_val = image.max() + 1
     hist, bins = np.histogram(image.ravel(), int(max_val))
     return hist, bins
 #===================================================================================================#
@@ -48,14 +48,10 @@ def lbp_riu_global_lobal_features(image, resolution, radius, method='default', n
             y_start = r - overlapped_height
             x_end = x_start + blk_width + 2*overlapped_width
             y_end = y_start + blk_height + 2*overlapped_height
-            if x_start<0:
-                x_start=0
-            if y_start<0:
-                y_start=0
-            if x_end>=width:
-                x_end = width - 1
-            if y_end>=height:
-                y_end = height - 1
+            if x_start<0:x_start=0
+            if y_start<0:y_start=0
+            if x_end>=width:x_end = width - 1
+            if y_end>=height:y_end = height - 1
             sub_lbp_image = lbp_image[y_start:y_end, x_start:x_end]
             sub_hist, sub_bins = accumulate_histogram_features(sub_lbp_image)
             if index ==0:
@@ -63,9 +59,9 @@ def lbp_riu_global_lobal_features(image, resolution, radius, method='default', n
             else:
                 hist = np.concatenate((hist,sub_hist), axis=0)
             index +=1
-            if bDebug:
-              dst_path = 'data_files/test_{}.bmp'.format(index)
-              cv2.imwrite(dst_path,sub_lbp_image)
+            #<For Debug Purpose>
+            #dst_path = 'data_files/test_{}.bmp'.format(index)
+            #cv2.imwrite(dst_path,sub_lbp_image)
     return hist  
 #===================================================================================================#
 #Date-of-code: 2018-xx-xx
