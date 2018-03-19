@@ -61,10 +61,11 @@ def list_files_with_given_extern(directory_path, file_extern):
 # Descriptions#
 #Write a list of string to file#
 def write_list_of_string_to_file(input_list,dest_path):
-    print(directory_path)
     file = open(dest_path,'w')
     for item in input_list:
         file.write("%s\n"%item)
+    file.close()
+    return
 #=============================================================#
 # Modified: 2018-03-xx
 # Author: datnt
