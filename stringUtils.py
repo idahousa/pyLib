@@ -56,9 +56,19 @@ def list_files_with_given_extern(directory_path, file_extern):
             rtn_list.append(file_name)
     return rtn_list
 #=============================================================#
-#Modified: 2018-03-16
-#Author: datnt
-#Descriptions#
-    
+# Modified: 2018-03-19
+# Author: datnt
+# Descriptions#
+#Write a list of string to file#
+def write_list_of_string_to_file(input_list,dest_path):
+    print(directory_path)
+    file = open(dest_path,'w')
+    for item in input_list:
+        file.write("%s\n"%item)
+#=============================================================#
+# Modified: 2018-03-xx
+# Author: datnt
+# Descriptions#
+
     
     
