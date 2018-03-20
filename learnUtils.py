@@ -1,5 +1,5 @@
 import sklearn
-from sklearn.decomposition import PCA
+from sklearn.decomposition import PCA, IncrementalPCA
 from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
 #=========================================================================================================================================#
 #Date-Of-Code: 2018 - xx - xx
@@ -9,12 +9,20 @@ from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
 #=> Find the new coordinate system by which the data are best represented by maximizing the variance of each data classes in the new system
 # data is the table of data. DO NOT need to be normalized before using PCA
 # Ref: http://scikit-learn.org/stable/auto_examples/decomposition/plot_pca_vs_lda.html#sphx-glr-auto-examples-decomposition-plot-pca-vs-lda-py
+# IPCA (IncrementalPCA) is used instead of conventional PCA if the input data is too large to fit the memory.
+# In this case, we accept a small error to calculate the principal component efficiently.
+# Ref: http://scikit-learn.org/stable/modules/generated/sklearn.decomposition.IncrementalPCA.html#sklearn.decomposition.IncrementalPCA
 #=========================================================================================================================================#
 def perform_pca(data, num_components):
-  pca = PCA(n_components = num_components)
-  pca.fit(data)
-  return pca
+  pca_model = PCA(n_components = num_components)
+  pca_model.fit(data)
+  return pca_model
 
+def perform_ipca(data, num_components, batch_size):
+  ipca_model = IncrementalPCA(n_components = num_components, batch_size = batch_size)
+  ipca_model.fit(data)
+  return ipca_model
+  
 def pca_transform(data, pca_kernel):
   return pca_kernel.transform(data)
 #=========================================================================================================================================#
