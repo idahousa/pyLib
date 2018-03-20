@@ -9,10 +9,9 @@ from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
 #=> Find the new coordinate system by which the data are best represented by maximizing the variance of each data classes in the new system
 #=========================================================================================================================================#
 def perform_pca(data, num_components):
-  
-
-  
-
+  pca = PCA(n_components = num_components)
+  pca.fit(data)
+  return pca
 #=========================================================================================================================================#
 #Date-Of-Code: 2018 - xx - xx
 #Author:
@@ -21,3 +20,11 @@ def perform_pca(data, num_components):
 #=> Find the new coordinate system by which the data are best represented and the data of classeses are largestly separated
 #=========================================================================================================================================#
 def perform_ldb(data, groundtruth_label, num_components):
+  lda = LinearDiscriminantAnalysis(n_components = num_components)
+  lda.fit(data,groundtruth_label)
+  return lda
+#=========================================================================================================================================#
+#Date-Of-Code: 2018 - xx - xx
+#Author:
+#Descriptions:
+#=========================================================================================================================================#
