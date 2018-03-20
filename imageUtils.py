@@ -41,7 +41,7 @@ def accumulate_histogram_features(image):
 #===================================================================================================#
 def lbp_riu_global_lobal_features(image, resolution, radius, method='default', num_blk_height=1, num_blk_width=1, overlapped_ratio=0):
     height, width = image.shape
-    if (overlapped_ratio <0 or overlapped_raito >=1 or num_blk_height <=0 or num_blk_width <=0):
+    if (overlapped_ratio <0 or overlapped_ratio >=1 or num_blk_height <=0 or num_blk_width <=0):
         return -1
     lbp_image = local_binary_pattern(image, resolution, radius, method=method)
     blk_width = int(width / num_blk_width) + 1
