@@ -4,7 +4,7 @@ from skimage.feature import local_binary_pattern
 import numpy as np
 import cv2
 #===================================================================================================#
-#Date-of-code: 2018-xx-xx
+#Date-of-code: 2018-03-19
 #Author: datnt
 #Description:
 #Accumulate the histogram of an gray-scale image or 2-d array
@@ -18,7 +18,7 @@ def accumulate_histogram_features(image):
     hist, bins = np.histogram(image.ravel(), int(max_val))
     return hist, bins
 #===================================================================================================#
-#Date-of-code: 2018-xx-xx
+#Date-of-code: 2018-03-19
 #Author: datnt
 #Description:
 #Extract the uniform and non-uniform rotation invariant lbp features for a gray-scale image by dividing
