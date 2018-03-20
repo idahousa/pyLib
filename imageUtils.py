@@ -1,6 +1,7 @@
 from skimage import io
 from skimage import data
 from skimage import measure
+from skimage import transform
 from skimage.feature import local_binary_pattern
 import numpy as np
 import cv2
@@ -88,5 +89,79 @@ def object_labelling(image):
         objects_size.append(obj_size)
     return label_image, num_objects, objects_size
 #===================================================================================================#
+#Date-of-code: 2018-03-20
+#Author: datnt
+#Description:
+#Rotate an image arround an center. This function is same as the skimage.transform.rotate() function
+#However, this function additionally return the transformation function that can be futher used
+#to calculate the new locations of some landmark points
+#Reference: https://github.com/scikit-image/scikit-image/blob/master/skimage/transform/_warps.py#L285
+#Please import the transform module by using "from skimage import transform" statement
+def rotate_image(image, angle, resize=False, center=None, order=1, mode='constant', cval=0, clip=True, preserve_range=False):
+    rows, cols = image.shape[0], image.shape[1]
+    # rotation around center
+    if center is None:
+        center = np.array((cols, rows)) / 2. - 0.5
+    else:
+        center = np.asarray(center)
+    tform1 = transform.SimilarityTransform(translation=center)
+    tform2 = transform.SimilarityTransform(rotation=np.deg2rad(angle))
+    tform3 = transform.SimilarityTransform(translation=-center)
+    tform = tform3 + tform2 + tform1
+    output_shape = None
+    if resize:
+        # determine shape of output image
+        corners = np.array([[0, 0],
+                            [0, rows - 1],
+                            [cols - 1, rows - 1],
+                            [cols - 1, 0]])
+        corners = tform.inverse(corners)
+        minc = corners[:, 0].min()
+        minr = corners[:, 1].min()
+        maxc = corners[:, 0].max()
+        maxr = corners[:, 1].max()
+        out_rows = maxr - minr + 1
+        out_cols = maxc - minc + 1
+        output_shape = np.ceil((out_rows, out_cols))
+
+        # fit output image in new shape
+        translation = (minc, minr)
+        tform4 = transform.SimilarityTransform(translation=translation)
+        tform = tform4 + tform
+    r_image = transform.warp(image, tform, output_shape=output_shape, order=order,mode=mode, cval=cval, clip=clip, preserve_range=preserve_range)
+    return r_image, tform
+#===================================================================================================#
+#Date-of-code: 2018-03-20
+#Author: datnt
+#Description:
+#This function is used after the use of rotate_image() function above to calculate the new coordinate of a given pixel
+#of original images in the rotated image.
+#A given pixel is in format of [row, column].
+"""
+Example:
+>> image = data.camera()
+>> image[ 210:220, 400:410] = 255
+>> ri_image, tform = rotate_image(image,-10,resize=True)
+>> new_coordinate = cal_coordinate_of_pixel_in_rotated_image(tform=tform,pixel_coordinate = [215, 405])
+>> print(new_coordinate)
+>> io.imshow(ri_image)
+>> io.show()
+"""
+def cal_coordinate_of_pixel_in_rotated_image(tform, pixel_coordinate):
+    point_array = np.array([[pixel_coordinate[1], pixel_coordinate[0]]])
+    return tform.inverse(point_array)
+#===================================================================================================#
+
+
+
+
+
+
+
+
+
+
+
+
 
 
