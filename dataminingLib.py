@@ -8,6 +8,7 @@ from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
 #Perform a principal component analysis on input data
 #=> Find the new coordinate system by which the data are best represented by maximizing the variance of each data classes in the new system
 # data is the table of data. DO NOT need to be normalized before using PCA
+# Ref: http://scikit-learn.org/stable/auto_examples/decomposition/plot_pca_vs_lda.html#sphx-glr-auto-examples-decomposition-plot-pca-vs-lda-py
 #=========================================================================================================================================#
 def perform_pca(data, num_components):
   pca = PCA(n_components = num_components)
@@ -23,6 +24,7 @@ def pca_transform(data, pca_kernel):
 #Perform a linear discriminant analysis on input data
 #=> Find the new coordinate system by which the data are best represented and the data of classeses are largestly separated
 # data is the table of data. DO NOT need to be normalized before using LDA
+# Ref: http://scikit-learn.org/stable/auto_examples/decomposition/plot_pca_vs_lda.html#sphx-glr-auto-examples-decomposition-plot-pca-vs-lda-py
 #=========================================================================================================================================#
 def perform_ldb(data, groundtruth_label, num_components):
   lda = LinearDiscriminantAnalysis(n_components = num_components)
