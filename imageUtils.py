@@ -5,13 +5,13 @@ from skimage import transform
 from skimage.feature import local_binary_pattern
 import numpy as np
 import cv2
-#===================================================================================================#
+#=======================================================================================================================================#
 #Date-of-code: 2018-03-19
 #Author: datnt
 #Description:
 #Accumulate the histogram of an gray-scale image or 2-d array
 #The data-type of input_image must be integer values
-#===================================================================================================#
+#=======================================================================================================================================#
 def accumulate_histogram_features(image):
     max_val = image.max() + 1
     if max_val < 2:
@@ -19,14 +19,14 @@ def accumulate_histogram_features(image):
         return -1
     hist, bins = np.histogram(image.ravel(), int(max_val))
     return hist, bins
-#===================================================================================================#
+#=======================================================================================================================================#
 #Date-of-code: 2018-03-19
 #Author: datnt
 #Description:
 #Extract the uniform and non-uniform rotation invariant lbp features for a gray-scale image by dividing
 #the input image into (M,N) sub-block.
 #If num_blk_height=1 and num_blk_with = 1 => Extract features for entire image
-#Parameters-----------------------------------------------------------------------------------------
+#Parameters
 # image      : input gray-scale image
 # resolution : number of surrounding pixels of lbp operator
 # radius     : the radius of lbp circle
@@ -38,7 +38,7 @@ def accumulate_histogram_features(image):
 # num_blk_height: number of sub-blocks in vertical direction
 # num_blk_width : number of sub-blocks in horizontal direction
 # overlapped_ratio: A value from 0 to 1 that indicates the overlapped ratio of sub-blocks.
-#===================================================================================================#
+#=======================================================================================================================================#
 def lbp_riu_global_lobal_features(image, resolution, radius, method='default', num_blk_height=1, num_blk_width=1, overlapped_ratio=0):
     height, width = image.shape
     if (overlapped_ratio <0 or overlapped_ratio >=1 or num_blk_height <=0 or num_blk_width <=0):
@@ -70,7 +70,7 @@ def lbp_riu_global_lobal_features(image, resolution, radius, method='default', n
             #dst_path = 'data_files/test_{}.bmp'.format(index)
             #cv2.imwrite(dst_path,sub_lbp_image)
     return hist  
-#===================================================================================================#
+#=======================================================================================================================================#
 #Date-of-code: 2018-03-20
 #Author: datnt
 #Description:
@@ -88,7 +88,7 @@ def object_labelling(image):
         obj_size = np.sum(label_image == i)
         objects_size.append(obj_size)
     return label_image, num_objects, objects_size
-#===================================================================================================#
+#=======================================================================================================================================#
 #Date-of-code: 2018-03-20
 #Author: datnt
 #Description:
@@ -130,7 +130,7 @@ def rotate_image(image, angle, resize=False, center=None, order=1, mode='constan
         tform = tform4 + tform
     r_image = transform.warp(image, tform, output_shape=output_shape, order=order,mode=mode, cval=cval, clip=clip, preserve_range=preserve_range)
     return r_image, tform
-#===================================================================================================#
+#=======================================================================================================================================#
 #Date-of-code: 2018-03-20
 #Author: datnt
 #Description:
@@ -150,7 +150,7 @@ Example:
 def cal_coordinate_of_pixel_in_rotated_image(tform, pixel_coordinate):
     point_array = np.array([[pixel_coordinate[1], pixel_coordinate[0]]])
     return tform.inverse(point_array)
-#===================================================================================================#
+#=======================================================================================================================================#
 
 
 
