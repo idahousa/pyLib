@@ -1,5 +1,6 @@
 from skimage import io
 from skimage import data
+from skimage import measure
 from skimage.feature import local_binary_pattern
 import numpy as np
 import cv2
@@ -69,14 +70,23 @@ def lbp_riu_global_lobal_features(image, resolution, radius, method='default', n
             #cv2.imwrite(dst_path,sub_lbp_image)
     return hist  
 #===================================================================================================#
-#Date-of-code: 2018-xx-xx
+#Date-of-code: 2018-03-20
 #Author: datnt
 #Description:
-  
-
-
-  
-  
-
+#Object labelling of binarized image
+#image : an 2-d binarized image that has two value of 0 (background) and 255 (objects- foreground)
+#Output: the labeled image, the number of object and corresponding size
+#This function performs same action as the object_labelling in the c code in my previous studies
+def object_labelling(image):
+    if len(image.shape) != 2:
+        return -1
+    label_image = measure.label(image)
+    num_objects = label_image.max()
+    objects_size = []
+    for i in range(1, num_objects + 1):
+        obj_size = np.sum(label_image == i)
+        objects_size.append(obj_size)
+    return label_image, num_objects, objects_size
+#===================================================================================================#
 
 
