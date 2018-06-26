@@ -1,4 +1,5 @@
 import os
+import tensorflow as tf
 #=============================================================#
 #Modified: 2018-03-16
 #Author: datnt
