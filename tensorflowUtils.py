@@ -39,4 +39,26 @@ def read_image_dataset(path_to_dataset):
         return dataset
     else:
         return False
- #=============================================================#
+#=============================================================#
+# Modified: 2018-06-27
+# Author: datnt
+# Descriptions#
+# Input a tensor flow dataset
+# Return the number of elements in the dataset
+def get_dataset_size(dataset):
+    """Measure the number of elements in a tensorflow dataset"""
+    dataset_iterator = dataset.make_one_shot_iterator()
+    get_next_element = dataset_iterator.get_next()
+    num_element = 0
+    with tf.Session() as sess:
+        while True:
+            try:
+                sess.run(get_next_element)
+                num_element = num_element + 1
+            except tf.errors.OutOfRangeError:
+                print('End of elements in dataset')
+                return num_element
+#=============================================================#
+# Modified: 2018-06-27
+# Author: datnt
+# Descriptions#
